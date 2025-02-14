@@ -9,3 +9,6 @@ Installing ollama locally:
 curl -fsSL https://ollama.com/install.sh | sh
 
 ollama pull DeepSeek-R1
+ollama run DeepSeek-R1
+
+/bye (To exit the local env)
