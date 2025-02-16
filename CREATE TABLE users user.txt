@@ -1,0 +1,61 @@
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash CHAR(60) NOT NULL,
+    role ENUM('Super Admin', 'Admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist') NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL CHECK (email LIKE '%_@_%._%'),
+    contact_number VARCHAR(20),
+    marital_status ENUM('Single', 'Married', 'Divorced', 'Widowed') DEFAULT 'Single',
+    date_of_birth DATE NULL,
+    street VARCHAR(255) NULL,
+    city VARCHAR(100) NULL,
+    state VARCHAR(100) NULL,
+    zip_code VARCHAR(20) NULL,
+    country VARCHAR(100) NULL,
+    profile_picture VARCHAR(255) NULL,
+    status ENUM('Active', 'Inactive', 'Suspended') DEFAULT 'Active',
+    last_login TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE patients (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE NOT NULL,  
+    insurance_number VARCHAR(50) NULL,  
+    insurance_provider VARCHAR(100) NULL,
+    emergency_contact_name VARCHAR(100) NOT NULL,
+    emergency_contact_number VARCHAR(20) NOT NULL,
+    patient_type ENUM('Inpatient', 'Outpatient') NOT NULL,
+    blood_type ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-') NULL,
+    physician_id INT NULL,  -- Links to doctors table (future)
+    status ENUM('Active', 'Discharged', 'Deceased') DEFAULT 'Active',
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+CREATE TABLE physicians (
+    physician_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNIQUE NOT NULL,
+    specialty VARCHAR(100) NOT NULL,
+    experience_years INT NOT NULL,
+    medical_license VARCHAR(50) UNIQUE NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    status ENUM('Available', 'On Leave', 'Retired') DEFAULT 'Available',
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+ALTER TABLE patients  
+ADD CONSTRAINT fk_primary_physician  
+FOREIGN KEY (physician_id)  
+REFERENCES physicians(physician_id)  
+ON DELETE SET NULL;
+CREATE TABLE consultations (
+    consultation_id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    consulted_physician_id INT NOT NULL, 
+    consultation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    observation TEXT NOT NULL,  
+    diagnosis TEXT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE,
+    FOREIGN KEY (consulted_physician_id) REFERENCES physicians(physician_id) ON DELETE CASCADE
+);
