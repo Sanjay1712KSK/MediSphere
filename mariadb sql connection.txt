@@ -1,0 +1,20 @@
+mariadb -u root -p
+password: 1712
+
+INSERT INTO Patients 
+(Fname, Lname, DOB, Gender, Address, PhoneNo, BloodType, Allergies, ExistingMedications, 
+ EmergencyContactName, EmergencyContactPhone, Relationship, UserName, Password_Hash, 
+ AccountStatus, Nationality, MaritalStatus, Occupation, PreferredLanguage) 
+VALUES
+('John', 'Doe', '1990-05-15', 'Male', '123 Main St, New York, NY', '123-456-7890', 'O+', 'Peanuts', 'Aspirin', 
+ 'Jane Doe', '987-654-3210', 'Spouse', 'johndoe90', 'hashed_password_1', 1, 'American', 'Married', 'Software Engineer', 'English');
+
+INSERT INTO Patients 
+(Fname, Lname, DOB, Gender, Address, PhoneNo, BloodType, Allergies, ExistingMedications, 
+ EmergencyContactName, EmergencyContactPhone, Relationship, UserName, Password_Hash, 
+ AccountStatus, Nationality, MaritalStatus, Occupation, PreferredLanguage) 
+VALUES
+('Alice', 'Smith', '1985-09-20', 'Female', '456 Oak St, Los Angeles, CA', '321-654-0987', 'A-', 'None', 'Ibuprofen', 
+ 'Bob Smith', '456-789-1234', 'Brother', 'alicesmith85', 'hashed_password_2', 1, 'Canadian', 'Single', 'Nurse', 'French');
+
+
